@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+mes=$(git log -1 HEAD --pretty=format:'%s')
+if [[ "$mes" =~ ^(:[a-z0-9\+]+:|Merge) ]]; then
+    exit 0
+fi
+
+echo "$mes"
+echo "[WARN] Chane commit message."
+git rest HEAD~
+echo "[WARN] Commit is reset"
+exit 1
