@@ -31,6 +31,9 @@ setup: ## setup using bin
 	@$(GO_GET) github.com/kisielk/errcheck
 	@$(GO_GET) honnef.co/go/tools/cmd/staticcheck
 	@$(GO_GET) golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
+	@$(GO_GET) github.com/fzipp/gocyclo
+	@$(GO_GET) gitlab.com/opennota/check/cmd/aligncheck
+	@$(GO_GET) github.com/securego/gosec/cmd/gosec
 
 .PHONY: list
 list: ## Display list modules
@@ -45,7 +48,7 @@ unparam: ## Find unused function params.
 	@unparam ${PKG_LIST}
 
 .PHONY: pkglint
-pkglint: #-# Lint package name
+pkglint: ## Lint package name
 	@${MAKEFILE_DIR}/scripts/pkglint.sh ${PKG_LIST}
 
 .PHONY: lint
@@ -61,12 +64,27 @@ staticcheck: ## Find something wrong.
 	@staticcheck ${PKG_LIST}
 
 .PHONY: shadow
-shadow: #-# shadow checks variable shadowing without err
+shadow: ## Shadow checks variable shadowing without err.
 	@! go vet -vettool=$(which shadow) ${PKG_LIST} 2>&1 | grep -vE '(declaration of "err" shadows|^vet: cannot process directory \.git|^#)'
 
-.PHONY: pretest
-pretest: pkglint lint shadow unparam errcheck staticcheck
+.PHONY: cyclo
+cyclo: ## Reports cyclomatic complexity.
+	@gocyclo -over 10 ${PKG_LIST}
 
+.PHONY: aligncheck
+aligncheck: ## Reports struct size.
+	@aligncheck ${PKG_LIST}
+
+.PHONY: sec
+sec: ## Reports unsafe code.
+	@gosec .
+
+.PHONY: pretest
+pretest: pkglint lint cyclo aligncheck shadow unparam errcheck staticcheck
+
+.PHONY: t
+t: ## Test $DIR. usage  make t DIR=foo
+	@GO_ENV=test go test -v ${PK}/${DIR} | $(COLORIZE_PASS) | $(COLORIZE_FAIL)
 .PHONY: test
 test: pretest ## Test all
 	@GO_ENV=test go test -v ${PKG_LIST} | $(COLORIZE_PASS) | $(COLORIZE_FAIL)
