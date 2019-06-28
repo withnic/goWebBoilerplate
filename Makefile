@@ -26,14 +26,15 @@ dev: ## Setup develop envelopment
 
 .PHONY: setup
 setup: ## setup using bin
-	@$(GO_GET) github.com/mvdan/unparam
-	@$(GO_GET) golang.org/x/lint/golint
-	@$(GO_GET) github.com/kisielk/errcheck
-	@$(GO_GET) honnef.co/go/tools/cmd/staticcheck
-	@$(GO_GET) golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
-	@$(GO_GET) github.com/fzipp/gocyclo
-	@$(GO_GET) gitlab.com/opennota/check/cmd/aligncheck
-	@$(GO_GET) github.com/securego/gosec/cmd/gosec
+	$(GO_GET) github.com/mvdan/unparam
+	$(GO_GET) golang.org/x/lint/golint
+	$(GO_GET) github.com/kisielk/errcheck
+	$(GO_GET) honnef.co/go/tools/cmd/staticcheck
+	$(GO_GET) golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
+	$(GO_GET) github.com/fzipp/gocyclo
+	$(GO_GET) gitlab.com/opennota/check/cmd/aligncheck
+	$(GO_GET) github.com/securego/gosec/cmd/gosec
+	$(GO_GET) github.com/haya14busa/reviewdog/cmd/reviewdog
 
 .PHONY: list
 list: ## Display list modules
