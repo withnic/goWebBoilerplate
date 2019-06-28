@@ -83,8 +83,9 @@ sec: ## Reports unsafe code.
 pretest: pkglint lint cyclo aligncheck shadow unparam errcheck staticcheck
 
 .PHONY: t
-t: ## Test $DIR. usage  make t DIR=foo
+t: ## Test dir path. usage make t DIR=foo
 	@GO_ENV=test go test -v ${PK}/${DIR} | $(COLORIZE_PASS) | $(COLORIZE_FAIL)
+
 .PHONY: test
 test: pretest ## Test all
 	@GO_ENV=test go test -v ${PKG_LIST} | $(COLORIZE_PASS) | $(COLORIZE_FAIL)
