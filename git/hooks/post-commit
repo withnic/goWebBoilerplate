@@ -6,7 +6,7 @@ if [[ "$mes" =~ ^(:[a-z0-9\+]+:|Merge) ]]; then
 fi
 
 echo "$mes"
-echo "[WARN] Chane commit message."
+echo "[WARN] Change commit message."
 git rest HEAD~
 echo "[WARN] Commit is reset"
 exit 1
