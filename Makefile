@@ -5,8 +5,14 @@ PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 GO_GET := GO111MODULE=off go get
 GO_MOD := GO111MODULE=on go mod
 GO := GO111MODULE=on go
-
+GO_BUILD := go build
+BINARY := app
 MAKEFILE_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+BUILD_TIME=`date +%FT%T%z`
+VERSION := 0.0.1
+REVISION := $(shell git rev-parse --short HEAD)
+LDFLAGS := -ldflags="-s -w -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -X \"main.BuildTime=$(BUILD_TIME)\"
+EXTLDFLAGS := -extldflags \"-static\""
 
 # ANSI color
 RED=\033[31m
@@ -37,6 +43,10 @@ setup: ## setup using bin
 	$(GO_GET) gitlab.com/opennota/check/cmd/aligncheck
 	$(GO_GET) github.com/securego/gosec/cmd/gosec
 	$(GO_GET) github.com/haya14busa/reviewdog/cmd/reviewdog
+
+.PHONY: build
+build: ## Build binary
+	$(GO_BUILD) ${LDFLAGS} ${EXTLDFLAGS} -o ${BINARY} .
 
 .PHONY: list
 list: ## Display list modules
