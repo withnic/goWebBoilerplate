@@ -1,0 +1,26 @@
+settings:
+  legacy:
+    force: false
+    interval: 100ms
+schema:
+- name: app
+  path: .
+  commands:
+    install:
+      status: false
+      method: make build
+    build:
+      status: true
+      method: make build
+    run:
+      status: true
+      method: ./app
+  watcher:
+    extensions:
+    - go
+    paths:
+    - /
+    ignored_paths:
+    - .git
+    - .realize
+    - vendor

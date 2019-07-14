@@ -6,6 +6,7 @@ COPY . .
 
 RUN set -x && \
 	apk add --no-cache git make gcc g++ \
+	&& GO111MODULE=off go get github.com/oxequa/realize \
 	&& make build
 
 FROM alpine
@@ -21,4 +22,5 @@ RUN set -x && \
 
 USER go
 
+EXPOSE 8080
 CMD ["./app"]
