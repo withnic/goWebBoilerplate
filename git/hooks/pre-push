@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+cb=$(git rev-parse --abbrev-ref HEAD)
+if [[ $cb =~ ^(fix|feature|remove|update|upgrade|refactor)__[a-zA-Z0-9]*$ ]]; then
+    exit 0
+fi
+
+if [[ $cb =~ ^master|staging|development|release$ ]]; then
+    exit 0
+fi
+
+echo $cb
+echo "[WARN] Change branch name. Format is {ACTION}{NUMBER}__{SUMMARY}"
+exit 1

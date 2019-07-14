@@ -22,6 +22,7 @@ COLORIZE_FAIL=sed ''/FAIL/s//$$(printf "$(RED)FAIL$(RESET)")/''
 dev: ## Setup develop envelopment
 	cp -P git/hooks/pre-commit .git/hooks/pre-commit
 	cp -p git/hooks/post-commit .git/hooks/post-commit
+	cp -p git/hooks/pre-push .git/hooks/pre-push
 	git config commit.template git/commit_template
 
 .PHONY: setup
