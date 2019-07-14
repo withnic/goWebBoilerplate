@@ -10,14 +10,14 @@ PASS=true
 
 for FILE in $STAGED_GO_FILES
 do
-  goimports -w $FILE
+  GO111MODULE=on go goimports -w $FILE
 
-  golint "-set_exit_status" $FILE
+  GO111MODULE=on go golint "-set_exit_status" $FILE
   if [[ $? == 1 ]]; then
     PASS=false
   fi
 
-  go vet $FILE
+  GO111MODULE=on go vet $FILE
   if [[ $? != 0 ]]; then
     PASS=false
   fi
