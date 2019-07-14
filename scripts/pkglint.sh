@@ -2,7 +2,7 @@
 
 for pkg in $@
 do
-  if [[ $pkg =~ /(util|utils|common|commons|helper|helpers)$ ]];
+  if [[ $pkg =~ /(utils?|commons?|helpers?|shares?|)$ ]];
   then
     echo $pkg
     echo "Avoid meaningless package names"
