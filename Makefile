@@ -56,6 +56,10 @@ list: ## Display list modules
 up_list: ## Display updatable modules list
 	@$(GO) list -u -m all
 
+.PHONY: download
+download: ## Download modules to local cache
+	@$(GO_MOD) download
+
 .PHONY: unparam
 unparam: ## Find unused function params.
 	@GO111MODULE=on unparam ${PKG_LIST}
