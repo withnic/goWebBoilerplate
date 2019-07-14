@@ -11,7 +11,8 @@ REVISION := $(shell git rev-parse --short HEAD)
 BUILD_TIME=`date +%FT%T%z`
 LDFLAGS := -ldflags="-s -w -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -X \"main.BuildTime=$(BUILD_TIME)\"
 EXTLDFLAGS := -extldflags \"-static\""
-PKG_LIST := $(shell go list ${PK}/... | grep -v /vendor/)
+PKG := "${PK}"
+PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 
 # ANSI color
 RED=\033[31m
@@ -57,7 +58,7 @@ up_list: ## Display updatable modules list
 
 .PHONY: unparam
 unparam: ## Find unused function params.
-	@unparam ${PKG_LIST}
+	@GO111MODULE=on unparam ${PKG_LIST}
 
 .PHONY: pkglint
 pkglint: ## Lint package name
@@ -69,23 +70,23 @@ lint: ## Find invalid code format.
 
 .PHONY: errcheck
 errcheck: ## Find unhandling error.
-	@errcheck ${PKG_LIST}
+	@GO111MODULE=on errcheck ${PKG_LIST}
 
 .PHONY: staticcheck
 staticcheck: ## Find something wrong.
-	@staticcheck ${PKG_LIST}
+	@GO111MODULE=on staticcheck ${PKG_LIST}
 
 .PHONY: shadow
 shadow: ## Shadow checks variable shadowing without err.
-	@! go vet -vettool=$(which shadow) ${PKG_LIST} 2>&1 | grep -vE '(declaration of "err" shadows|^vet: cannot process directory \.git|^#)'
+	@! $(GO) vet -vettool=$(which shadow) ${PKG_LIST} 2>&1 | grep -vE '(declaration of "err" shadows|^vet: cannot process directory \.git|^#)'
 
 .PHONY: cyclo
 cyclo: ## Reports cyclomatic complexity.
-	@gocyclo -over 10 ${PKG_LIST}
+	@gocyclo -over 10 .
 
 .PHONY: aligncheck
 aligncheck: ## Reports struct size.
-	@aligncheck ${PKG_LIST}
+	@GO111MODULE=on aligncheck ${PKG_LIST}
 
 .PHONY: sec
 sec: ## Reports unsafe code.
