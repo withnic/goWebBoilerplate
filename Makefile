@@ -29,6 +29,7 @@ dev: ## Setup develop envelopment
 setup: ## setup using bin
 	$(GO_GET) github.com/mvdan/unparam
 	$(GO_GET) golang.org/x/lint/golint
+	$(GO_GET) golang.org/x/tools/cmd/goimports
 	$(GO_GET) github.com/kisielk/errcheck
 	$(GO_GET) honnef.co/go/tools/cmd/staticcheck
 	$(GO_GET) golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
