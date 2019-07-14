@@ -2,8 +2,8 @@ PROJECT_NAME := goWebBoilerplate
 PK := github.com/withnic/${PROJECT_NAME}
 GO := GO111MODULE=on go
 GO_GET := GO111MODULE=off go get
-GO_MOD := GO111MODULE=on go mod
-GO_BUILD := go build
+GO_MOD := ${GO} mod
+GO_BUILD := ${GO} build
 BINARY := app
 MAKEFILE_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 VERSION := 0.0.1
