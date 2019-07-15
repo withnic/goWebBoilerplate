@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cb=$(git rev-parse --abbrev-ref HEAD)
-if [[ $cb =~ ^(fix|feature|remove|update|upgrade|refactor)__[a-zA-Z0-9]*$ ]]; then
+if [[ $cb =~ ^(fix|feature|remove|update|upgrade|refactor)__[a-zA-Z0-9_]*$ ]]; then
     exit 0
 fi
 
