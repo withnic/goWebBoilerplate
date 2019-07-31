@@ -43,6 +43,7 @@ setup: ## setup using bin
 	$(GO_GET) gitlab.com/opennota/check/cmd/aligncheck
 	$(GO_GET) github.com/securego/gosec/cmd/gosec
 	$(GO_GET) github.com/haya14busa/reviewdog/cmd/reviewdog
+	$(GO_GET) mvdan.cc/sh/cmd/shfmt
 
 .PHONY: build
 build: ## Build binary
@@ -67,6 +68,10 @@ unparam: ## Find unused function params.
 .PHONY: pkglint
 pkglint: ## Lint package name
 	@${MAKEFILE_DIR}/scripts/pkglint.sh ${PKG_LIST}
+
+.PHON: sh-lint
+sh-lint: ## Shell lint for script Dir
+	@shfmt -d ${MAKEFILE_DIR}/scripts
 
 .PHONY: lint
 lint: ## Find invalid code format.
