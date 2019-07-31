@@ -1,33 +1,41 @@
-#!/usr/bin/env bash
+#!/bin/sh
+# Copyright 2012 The Go Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
 
-STAGED_GO_FILES=$(git diff --cached --name-only | grep ".go$")
+# git gofmt pre-commit hook
+#
+# To use, store as .git/hooks/pre-commit inside your repository and make sure
+# it has execute permissions.
+#
+# This script does not handle file names that contain spaces.
 
-if [[ "$STAGED_GO_FILES" = "" ]]; then
-  exit 0
+gofiles=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$')
+if [ -n "$gofiles" ]; then
+	unformattedgo=$(gofmt -l $gofiles)
 fi
 
-PASS=true
-
-for FILE in $STAGED_GO_FILES
-do
-  GO111MODULE=on go goimports -w $FILE
-
-  GO111MODULE=on go golint "-set_exit_status" $FILE
-  if [[ $? == 1 ]]; then
-    PASS=false
-  fi
-
-  GO111MODULE=on go vet $FILE
-  if [[ $? != 0 ]]; then
-    PASS=false
-  fi
-done
-
-if ! $PASS; then
-  printf "COMMIT FAILED\n"
-  exit 1
-else
-  printf "COMMIT SUCCEEDED\n"
+shfiles=$(git diff --cached --name-only --diff-filter=ACM | grep '\.sh$')
+if [ -n "$shfiles" ]; then
+	unformattedsh=$(gofmt -l $shfiles)
 fi
 
-exit 0
+if [ -z "$unformattedgo" ] && [ -z "$unformattedsh" ]; then
+	exit 0
+fi
+
+if [ -n "$unformattedgo" ]; then
+	echo >&2 "Go files must be formatted with gofmt. Please run:"
+	for fn in $unformattedgo; do
+		echo >&2 "  gofmt -w $PWD/$fn"
+	done
+fi
+
+if [ -n "$unformattedsh" ]; then
+	echo >&2 "Shell files must be formatted with shfmt. Please run:"
+	for fn in $unformattedsh; do
+		echo >&2 "  shfmt -w $PWD/$fn"
+	done
+fi
+
+exit 1
