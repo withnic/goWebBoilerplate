@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 mes=$(git log -1 HEAD --pretty=format:'%s')
-if [[ "$mes" =~ ^(:[a-z0-9\+]+:|Merge) ]]; then
-    exit 0
+if [[ "$mes" =~ ^(:[a-z0-9\+\_\-]+:|Merge) ]]; then
+	exit 0
 fi
 
 echo "$mes"
