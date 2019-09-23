@@ -44,6 +44,7 @@ setup: ## setup using bin
 	$(GO_GET) github.com/securego/gosec/cmd/gosec
 	$(GO_GET) github.com/haya14busa/reviewdog/cmd/reviewdog
 	$(GO_GET) mvdan.cc/sh/cmd/shfmt
+	$(GO_GET) github.com/client9/misspell/cmd/misspell
 
 .PHONY: build
 build: ## Build binary
@@ -77,6 +78,10 @@ sh-lint: ## Shell lint for script Dir
 lint: ## Find invalid code format.
 	@golint --set_exit_status ${PKG_LIST}
 
+.PHONY: misspell
+misspell: ## Find Missspell
+	@find . -type f -name '*.go' | grep -v vendor/ | xargs misspell -error
+
 .PHONY: errcheck
 errcheck: ## Find unhandling error.
 	@GO111MODULE=on errcheck ${PKG_LIST}
@@ -102,7 +107,7 @@ sec: ## Reports unsafe code.
 	@gosec .
 
 .PHONY: pretest
-pretest: pkglint lint cyclo aligncheck shadow unparam errcheck staticcheck
+pretest: misspell pkglint lint cyclo aligncheck shadow unparam errcheck staticcheck
 
 .PHONY: t
 t: ## Test dir path. usage make t DIR=foo
