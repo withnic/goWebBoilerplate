@@ -11,10 +11,21 @@ schema:
       method: make build
     build:
       status: true
-      method: make build
+      method: make debug_build
     run:
       status: true
       method: ./app
+# use delve
+#    run:
+#      status: true
+#      method: /go/bin/dlv
+#  args:
+#    - exec
+#    - ./app
+#    - --headless=true
+#    - --listen=:2345
+#    - --api-version=2
+#    - --accept-multiclient
   watcher:
     extensions:
     - go

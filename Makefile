@@ -9,8 +9,10 @@ MAKEFILE_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 VERSION := 0.0.1
 REVISION := $(shell git rev-parse --short HEAD)
 BUILD_TIME=`date +%FT%T%z`
-LDFLAGS := -ldflags="-s -w -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -X \"main.BuildTime=$(BUILD_TIME)\"
+TAGS := -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -X \"main.BuildTime=$(BUILD_TIME)\"
+LDFLAGS := -ldflags="-s -w ${TAGS}
 EXTLDFLAGS := -extldflags \"-static\""
+DEBUGFLAGS := -ldflags=" ${TAGS} "
 PKG := "${PK}"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 
@@ -49,6 +51,10 @@ setup: ## setup using bin
 .PHONY: build
 build: ## Build binary
 	$(GO_BUILD) ${LDFLAGS} ${EXTLDFLAGS} -o ${BINARY} .
+
+.PHONY: debug_build
+debug_build: ## Debug build
+	$(GO_BUILD) ${DEBUGFLAGS} -gcflags "-N -l" -o ${BINARY} .
 
 .PHONY: list
 list: ## Display list modules

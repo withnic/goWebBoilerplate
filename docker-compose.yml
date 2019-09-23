@@ -6,6 +6,11 @@ services:
       target: build
     ports:
       - "8080:8080"
+      - "2345:2345"
     volumes:
       - .:/go/app
     command: realize start
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_PTRACE
