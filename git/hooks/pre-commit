@@ -10,12 +10,12 @@
 #
 # This script does not handle file names that contain spaces.
 
-gofiles=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$')
+gofiles=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$' | grep -v '/vendor')
 if [ -n "$gofiles" ]; then
 	unformattedgo=$(gofmt -l $gofiles)
 fi
 
-shfiles=$(git diff --cached --name-only --diff-filter=ACM | grep '\.sh$')
+shfiles=$(git diff --cached --name-only --diff-filter=ACM | grep '\.sh$' | grep -v '/vendor')
 if [ -n "$shfiles" ]; then
 	unformattedsh=$(gofmt -l $shfiles)
 fi
