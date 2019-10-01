@@ -10,5 +10,5 @@ if [[ $cb =~ ^master|staging|development|release$ ]]; then
 fi
 
 echo $cb
-echo "[WARN] Change branch name. Format is {ACTION}{NUMBER}__{SUMMARY}"
+echo "[WARN] Change branch name. Format is {ACTION}__{SUMMARY}"
 exit 1
