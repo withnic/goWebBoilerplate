@@ -123,5 +123,10 @@ t: ## Test dir path. usage make t DIR=foo
 test: pretest ## Test all
 	@GO_ENV=test ${GO} test -v ${PKG_LIST} | $(COLORIZE_PASS) | $(COLORIZE_FAIL)
 
+.PHONY: ci
+ci: #-# ci
+	@GO_ENV=test ${GO} test -v ${PKG_LIST} | $(COLORIZE_PASS) | $(COLORIZE_FAIL)
+
+
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
