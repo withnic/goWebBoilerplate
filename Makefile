@@ -44,7 +44,6 @@ setup: ## setup using bin
 	$(GO_GET) github.com/fzipp/gocyclo
 	$(GO_GET) gitlab.com/opennota/check/cmd/aligncheck
 	$(GO_GET) github.com/securego/gosec/cmd/gosec
-	$(GO_GET) github.com/haya14busa/reviewdog/cmd/reviewdog
 	$(GO_GET) mvdan.cc/sh/cmd/shfmt
 	$(GO_GET) github.com/client9/misspell/cmd/misspell
 
