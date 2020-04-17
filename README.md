@@ -1,6 +1,5 @@
 # goWebBoilerplate
 
-using Wip
 Template go web app.
 
 ## Development
