@@ -127,5 +127,10 @@ ci: #-# ci
 	@GO_ENV=test ${GO} test -v ${PKG_LIST} | $(COLORIZE_PASS) | $(COLORIZE_FAIL)
 
 
+.PHONY: todo
+todo: ## show TODO, FIXME
+	@grep --color=always --exclude-dir={.git,.idea,vendor} --include=\*.go -n -i -E -r 'FIXME|TODO' . || echo "No FIXME or TODO lines found."
+
+
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
